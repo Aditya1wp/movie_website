@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"> <!-- Default theme is dark -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Desert IPTV</title>
+    <link rel="stylesheet" href="about-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- New Fonts: Syne for headings, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300..700&family=Syne:wght@700&display=swap" rel="stylesheet">
+
+    <script src="about-script.js" defer></script>
+</head>
+<body>
+    <!-- Background Gradient -->
+    <div class="background-gradient"></div>
+
+    <!-- Main Navigation -->
+    <header class="main-header">
+        <a href="index.html" class="logo">AG</a>
+        <nav class="desktop-nav">
+            <a href="index.html">Home</a>
+            <a href="search.html">Search</a>
+        </nav>
+        <div class="header-controls">
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle theme">
+                <i class="fa-solid fa-sun"></i> <!-- Sun icon for dark mode -->
+            </button>
+            <button id="menu-btn" class="hamburger-btn" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="mobile-nav-overlay">
+        <button id="close-btn" class="close-btn" aria-label="Close menu">&times;</button>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="search.html">Search</a>
+            <a href="https://github.com/your-username" target="_blank">GitHub</a>
+        </nav>
+    </div>
+
+    <main class="container">
+        <section class="profile-section">
+            <img src="img/your_img.jpeg" alt="Aditya Gaurav" class="profile-image">
+            <h1 class="main-heading">Aditya Gaurav</h1>
+            <p class="bio-text">
+                A passionate developer exploring the frontiers of technology, one line of code at a time.
+            </p>
+        </section>
+
+        <section class="skills-section">
+            <h2 class="sub-heading">My Tech Stack</h2>
+            <div class="bento-grid">
+                <!-- Skill Cards with DevIcons -->
+                <div class="skill-card"><img src="img/c.svg" alt="C logo"><span>C</span></div>
+                <div class="skill-card"><img src="img/cplusplus.svg" alt="C++ logo"><span>C++</span></div>
+                <div class="skill-card"><img src="img/java-14.svg" alt="Java logo"><span>Java</span></div>
+                <div class="skill-card"><img src="img/html-1.svg" alt="HTML5 logo"><span>HTML</span></div>
+                <div class="skill-card"><img src="img/css-3.svg" alt="CSS3 logo"><span>CSS</span></div>
+                <div class="skill-card"><img src="img/javascript-1.svg" alt="JavaScript logo"><span>JavaScript</span></div>
+                <div class="skill-card"><img src="img/tailwind-css-2.svg" alt="Tailwind CSS logo"><span>Tailwind</span></div>
+                <div class="skill-card"><img src="img/git-bash.svg" alt="Git logo"><span>Git Bash</span></div>
+            </div>
+        </section>
+
+        <div class="social-links">
+            <a href="https://github.com/your-username" target="_blank" class="github-link">
+                <i class="fab fa-github"></i> View on GitHub
+            </a>
+        </div>
+    </main>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="scroll-to-top-btn" aria-label="Scroll to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+</body>
+</html>
