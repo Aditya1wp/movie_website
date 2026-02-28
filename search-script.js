@@ -201,7 +201,7 @@ searchInput.addEventListener('input', () => {
     }
 });
 
-const TMDB_TOKEN = config.TMDB_TOKEN;
+const TMDB_TOKEN = "781c7956dac2399986d351b428eb5e26";
 
 async function loadMovies() {
   const url = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_TOKEN}&language=en-US&page=1`;
