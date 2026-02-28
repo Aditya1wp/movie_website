@@ -265,6 +265,28 @@ button:disabled {
     transform: scale(1.1);
 }
 
+/* --- External Link Block --- */
+.external-link-container {
+    margin-top: 40px;
+    text-align: center;
+    display: none; /* Hidden by default, shown via JS */
+}
+
+.external-link-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background: linear-gradient(90deg, #ff3d00, #ff9800);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
 /* --- Modal Styles --- */
 .modal {
     display: none; /* Hidden by default */
@@ -332,9 +354,43 @@ button:disabled {
 
 
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .data {
+        padding: 20px;
+    }
     .movie-card {
-        flex: 0 0 calc((100% - 15px) / 2); 
+        flex: 0 0 calc(100% / 2.5 - 9px); /* Show 2.5 cards */
+    }
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+    nav {
+        padding: 1rem;
+    }
+    .logo {
+        font-size: 1.5rem;
+    }
+    .nav-links a {
+        margin-right: 10px;
+        font-size: 1rem;
+    }
+    input {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    button {
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-bar-container {
+        flex-direction: column;
+    }
+    .movie-card {
+        flex: 0 0 calc((100% - 15px) / 2); /* 2 cards on mobile */
     }
 }
 

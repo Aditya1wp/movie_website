@@ -106,6 +106,7 @@ let currentMovies = []; // Store fetched movies here
 
 async function performSearch() {
     const query = searchInput.value.trim();
+    const externalLinkSection = document.getElementById('external-link-section');
     if (query) {
         // Store original icon
         const originalContent = searchBtn.innerHTML;
@@ -114,6 +115,23 @@ async function performSearch() {
         searchBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
         searchBtn.disabled = true;
         
+        // Show loading state for external links
+        externalLinkSection.style.display = 'block';
+        externalLinkSection.innerHTML = `
+            <h2 style="color: white; margin-bottom: 15px; padding-left: 5px;">Download Links</h2>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="external-link-btn" disabled style="cursor: wait; opacity: 0.8;">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Generating...
+                </button>
+                <button class="external-link-btn" disabled style="background: linear-gradient(90deg, #00c6ff, #0072ff); cursor: wait; opacity: 0.8;">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Generating...
+                </button>
+                <button class="external-link-btn" disabled style="background: linear-gradient(90deg, #8e2de2, #4a00e0); cursor: wait; opacity: 0.8;">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Generating...
+                </button>
+            </div>
+        `;
+
         try {
             const url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_TOKEN}&query=${encodeURIComponent(query)}&language=en-US&page=1`;
             const response = await fetch(url);
@@ -131,19 +149,56 @@ async function performSearch() {
             } else {
                 row.innerHTML = '<p style="text-align:center; width:100%; padding: 20px;">No results found.</p>';
             }
+
+            // Generate and display the external link button
+            const encodedQuery = encodeURIComponent(query);
+            const olaMoviesUrl = `https://n1.olamovies.info/?s=${encodedQuery}`;
+            const filmyzillaUrl = `https://www.google.com/m/search?q=${encodedQuery}&as_sitesearch=www.filmyzilla32.com`;
+            const uhdMoviesUrl = `https://uhdmovies.loan/search/${encodedQuery}`;
+            
+            externalLinkSection.innerHTML = `
+                <h2 style="color: white; margin-bottom: 15px; padding-left: 5px;">Download Links</h2>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="${olaMoviesUrl}" target="_blank" class="external-link-btn">
+                        Find '${query}' on OlaMovies
+                    </a>
+                    <a href="${filmyzillaUrl}" target="_blank" class="external-link-btn" style="background: linear-gradient(90deg, #00c6ff, #0072ff);">
+                        Find '${query}' on FilmyZilla
+                    </a>
+                    <a href="${uhdMoviesUrl}" target="_blank" class="external-link-btn" style="background: linear-gradient(90deg, #8e2de2, #4a00e0);">
+                        Find '${query}' on UHDMovies
+                    </a>
+                </div>
+            `;
+            externalLinkSection.style.display = 'block';
+
         } catch (error) {
             console.error("Search Error:", error);
+            externalLinkSection.style.display = 'none';
+            externalLinkSection.innerHTML = '';
         } finally {
             // Revert changes
             searchBtn.innerHTML = originalContent;
             searchBtn.disabled = false;
         }
+    } else {
+        // If query is empty, hide the external link section
+        externalLinkSection.style.display = 'none';
+        externalLinkSection.innerHTML = '';
     }
 }
 
 searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') performSearch();
+});
+
+searchInput.addEventListener('input', () => {
+    if (searchInput.value.trim() === '') {
+        const externalLinkSection = document.getElementById('external-link-section');
+        externalLinkSection.style.display = 'none';
+        externalLinkSection.innerHTML = '';
+    }
 });
 
 const TMDB_TOKEN = "781c7956dac2399986d351b428eb5e26";
