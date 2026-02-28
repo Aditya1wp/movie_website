@@ -57,6 +57,7 @@ document.addEventListener('mousemove', (e) => {
     targetRotX = (e.clientY - height/2) * 0.001;
 });
 
+// Animation loop
 function animate() {
     ctx.clearRect(0, 0, width, height);
     
@@ -95,14 +96,15 @@ function animate() {
     
     requestAnimationFrame(animate);
 }
-
 animate();
 
 // --- Search Button Logic ---
 const searchBtn = document.getElementById('search-btn');
 const searchInput = document.getElementById('movie-search');
 
-function performSearch() {
+let currentMovies = []; // Store fetched movies here
+
+async function performSearch() {
     const query = searchInput.value.trim();
     if (query) {
         // Store original icon
@@ -112,16 +114,118 @@ function performSearch() {
         searchBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
         searchBtn.disabled = true;
         
-        // Simulate API call (2 seconds)
-        setTimeout(() => {
+        try {
+            const url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_TOKEN}&query=${encodeURIComponent(query)}&language=en-US&page=1`;
+            const response = await fetch(url);
+            const data = await response.json();
+            currentMovies = data.results || []; // Update global list
+
+            const row = document.getElementById('movieRow');
+            if (data.results && data.results.length > 0) {
+                row.innerHTML = data.results.map(movie => `
+                    <div class="movie-card" data-id="${movie.id}">
+                      <img src="${movie.poster_path ? 'https://image.tmdb.org/t/p/w300' + movie.poster_path : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.title}">
+                      <p>${movie.title.length > 20 ? movie.title.substring(0, 20) + '...' : movie.title}</p>
+                    </div>
+                `).join('');
+            } else {
+                row.innerHTML = '<p style="text-align:center; width:100%; padding: 20px;">No results found.</p>';
+            }
+        } catch (error) {
+            console.error("Search Error:", error);
+        } finally {
             // Revert changes
             searchBtn.innerHTML = originalContent;
             searchBtn.disabled = false;
-        }, 2000);
+        }
     }
 }
 
 searchBtn.addEventListener('click', performSearch);
 searchInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') performSearch();
+});
+
+const TMDB_TOKEN = "781c7956dac2399986d351b428eb5e26";
+
+async function loadMovies() {
+  const url = `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_TOKEN}&language=en-US&page=1`;
+  
+  try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (data.results) {
+          // 1. RANDOMIZE: Shuffle the 20 results and pick 20 (enough for 4 slides of 5)
+          const randomMovies = data.results.sort(() => Math.random() - 0.5).slice(0, 20);
+          currentMovies = randomMovies; // Update global list
+
+          // 2. RENDER: Put them on the screen
+          const row = document.getElementById('movieRow');
+          row.innerHTML = randomMovies.map(movie => `
+            <div class="movie-card" data-id="${movie.id}">
+              <img src="${movie.poster_path ? 'https://image.tmdb.org/t/p/w300' + movie.poster_path : 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${movie.title}">
+              <p>${movie.title.length > 20 ? movie.title.substring(0, 20) + '...' : movie.title}</p>
+            </div>
+          `).join('');
+      }
+  } catch (error) {
+      console.error("Error loading movies:", error);
+  }
+}
+
+// 3. SCROLL LOGIC: For the buttons
+function sideScroll(direction) {
+  const row = document.getElementById('movieRow');
+  const scrollAmount = row.clientWidth; // Scroll exactly one visible width
+  if (direction === 'left') {
+    row.scrollLeft -= scrollAmount;
+  } else {
+    row.scrollLeft += scrollAmount;
+  }
+}
+
+loadMovies();
+
+// --- Modal Logic ---
+const modal = document.getElementById('movie-modal');
+const closeBtn = document.querySelector('.close-btn');
+const modalTitle = document.getElementById('modal-title');
+const modalPoster = document.getElementById('modal-poster');
+const modalOverview = document.getElementById('modal-overview');
+const modalDate = document.getElementById('modal-date');
+const modalRating = document.getElementById('modal-rating');
+
+// Event Delegation: Listen for clicks on the container
+document.getElementById('movieRow').addEventListener('click', (e) => {
+    const card = e.target.closest('.movie-card');
+    if (card) {
+        const movieId = card.dataset.id;
+        const movie = currentMovies.find(m => m.id == movieId);
+        if (movie) {
+            openModal(movie);
+        }
+    }
+});
+
+function openModal(movie) {
+    modalTitle.textContent = movie.title;
+    modalPoster.src = movie.poster_path 
+        ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path 
+        : 'https://via.placeholder.com/300x450?text=No+Image';
+    modalOverview.textContent = movie.overview || "No overview available.";
+    modalDate.textContent = movie.release_date ? `Released: ${movie.release_date}` : '';
+    modalRating.innerHTML = `<i class="fa-solid fa-star" style="color: gold;"></i> ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}`;
+    
+    modal.style.display = 'flex';
+}
+
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
 });
