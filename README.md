@@ -1,7 +1,7 @@
 <<<<<<< HEAD
-# Desert IPTV Landing Page
+# CineViewHub Landing Page
 
-This project is a modern, responsive landing page designed for an IPTV service provider ("Desert IPTV"). It features a dark-themed UI with glassmorphism effects, interactive pricing cards, and dynamic content sections. The design focuses on converting visitors with clear calls to action, feature highlights, and customer testimonials.
+This project is a modern, responsive landing page designed for an IPTV service provider ("CineViewHub"). It features a dark-themed UI with glassmorphism effects, interactive pricing cards, and dynamic content sections. The design focuses on converting visitors with clear calls to action, feature highlights, and customer testimonials.
 
 ## ✨ Key Features
 
@@ -52,4 +52,3 @@ To get a local copy up and running, follow these simple steps.
 ## ✒️ Credits
 
 This project was designed and developed by **Aditya Gaurav**.
-
